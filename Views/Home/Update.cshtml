@@ -1,0 +1,74 @@
+﻿@model Lesson
+
+@{
+    Layout = null;
+}
+@{
+    string[,] time = new string[8, 2] { { "09:00" , "10:20" }, { "10:30", "11:50" }, { "12:10", "13:30" }, { "13:40", "15:00" }, { "15:10", "16:30" },
+{"16:40" , "18:00" }, {"18:10" , "19:30" }, {"19:40" , "21:00" } };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timetable</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
+
+</head>
+<body>
+    <style>
+        .create-form {
+            width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+
+    <div class="card text-center create-form">
+        <div class="card-header">
+            Расписание учебныx занятий
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Добавление занятия</h5>
+            <form method="post" asp-action="Update">
+                <label asp-for="Name" name="Name"></label>
+                <input type="text" asp-for="Name" name="Name" value="@Model.Name" class="form-control" />
+                <br />
+                <label asp-for="Auditorium" name="Auditorium"></label>
+                <input type="text" asp-for="Auditorium" name="Auditorium" value="@Model.Auditorium" class="form-control" />
+                <br />
+                <label asp-for="BeginLesson" name="beginLesson"></label>
+                <input type="text" asp-for="BeginLesson" name="beginLesson" value="@time[(int)ViewData["Num"]-1, 0]" readonly class="form-control" />
+                <br />
+                <label asp-for="EndLesson" name="endLesson"></label>
+                <input type="text" asp-for="EndLesson" name="endLesson" value="@time[(int)ViewData["Num"]-1, 1]" readonly class="form-control" />
+                <br />
+                <label asp-for="Building" name="building"></label>
+                <input type="text" asp-for="Building" name="building" value="@Model.Building" class="form-control" />
+                <br />
+                <label asp-for="Date" name="date"></label>
+                <input type="text" asp-for="Date" name="date" value="@ViewData["Date"]" readonly class="form-control" />
+                <br />
+                <label asp-for="Lecturer" name="lecturer"></label>
+                <input type="text" asp-for="Lecturer" name="lecturer" value="@Model.Lecturer" class="form-control" />
+                <br />
+                <label asp-for="Stream" name="stream"></label>
+                <input type="text" asp-for="Stream" name="stream" value="@Model.Stream" class="form-control" />
+                <br />
+                <label asp-for="Type" name="Type"></label>
+                <input type="text" asp-for="Type" name="Type" value="@Model.Type" class="form-control" />
+                <br />
+                <label asp-for="Status" name="status"></label>
+                <input type="text" asp-for="Status" name="status" value="@Model.Status" readonly class="form-control" />
+                <br />
+                <label asp-for="Email" name="email"></label>
+                <input type="text" asp-for="Email" name="email" value="@ViewData["Email"]" readonly class="form-control" />
+                <br />
+                <input type="submit" name="press" value="Создать" />
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timetable</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
+
+</head>
+<body>
+    <style>
+        .email-form {
+            width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+
+    <div class="card text-center email-form">
+        <div class="card-header">
+            Расписание учебныx занятий
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Введите свою корпоративную почту</h5>
+            <form asp-action="Timetable">
+                <input type="text" class="form-control" name="email">
+                <button type="submit" class="btn btn-light">Enter</button>
+            </form>
+        </div>
+        <div class="card-footer text-muted">
+            ВШЭ рулит
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+
+

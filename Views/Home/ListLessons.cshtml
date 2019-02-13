@@ -1,0 +1,167 @@
+﻿@model List<Lesson>
+@{
+    Layout = null;
+}
+@{
+    string[,] time = new string[8, 2] { { "9:00" , "10:20" }, { "10:30", "11:50" }, { "12:10", "13:30" }, { "13:40", "15:00" }, { "15:10", "16:30" },
+{"16:40" , "18:00" }, {"18:10" , "19:30" }, {"19:40" , "21:00" } };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+</head>
+<body>
+    <script type="text/javascript">
+        $(function () {
+            $('#datep').datepicker();
+        });
+    </script>
+    <style>
+        body {
+            padding: 10px;
+            background-color: #f0f9ff;
+        }
+
+        .header {
+            text-align: center;
+            margin: 30px;
+        }
+
+        input {
+            width: 200px;
+            text-align: left;
+        }
+
+        .control-panel {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .form {
+            display: inline-block;
+        }
+
+        .lesson {
+            display: inline-block;
+            vertical-align: text-top;
+        }
+
+        .time-lesson {
+            display: inline-block;
+            vertical-align: text-top;
+        }
+
+        .lessons {
+            background-color: #bde3ff;
+            border: 1px solid white;
+            padding: 10px;
+        }
+
+        tr {
+            border: 1px solid white;
+        }
+
+        .day-of-week {
+            text-align: center;
+            background-color: #8aceff;
+            border: 1px solid white;
+            vertical-align: text-top;
+            padding: 10px;
+        }
+
+        .list {
+            border: 1px solid white;
+            padding: 10px;
+            margin: auto;
+        }
+    </style>
+
+    <div class="header">
+        <h2>Расписание учебных занятий</h2>
+    </div>
+
+    <div class="control-panel">
+        <div class="form">
+            <form asp-action="Timetable" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Email" name="email">
+                </div>
+            </form>
+        </div>
+        <div class="form">
+            <form asp-action="Timetable" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Date" name="date">
+                </div>
+            </form>
+        </div>
+        <div style="display:inline-block;">
+            <a asp-action="Edit" class="btn btn-primary">Edit</a>
+        </div>
+        <div style="display:inline-block;">
+            <a asp-action="Timetable" class="btn btn-light">Table</a>
+        </div>
+
+    </div>
+
+
+
+    @{
+        string[] dayWeek = { "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота" };
+    }
+    
+    <table class="list">
+        @for (var i = 1; i <= 6; ++i)
+        {
+
+            <tr>
+                <td class="day-of-week">
+                    @dayWeek[i - 1]<br />@DateTime.Parse((string)ViewData["date"]).AddDays(i - 1).ToString("d")
+                </td>
+
+                <td class="lessons">
+                    @for (var j = 1; j <= 8; ++j)
+                    {
+                        @foreach (Lesson item in Model)
+                        {
+                            int dayOfWeek = (int)DateTime.Parse(item.Date).DayOfWeek;
+
+                            <div>
+                                @if (dayOfWeek == i && item.BeginLesson == time[j - 1, 0])
+                                {
+                                    <div class="time-lesson">@time[j - 1, 0]-@time[j - 1, 1]</div>
+                                    <div class="lesson">
+                                        <ul>
+                                            <li>
+                                                <b>@item.Name</b> <br />
+                                                @item.Type <br /> @item.Building <br /> @item.Lecturer <br />@item.Auditorium <br />
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+
+</body>
+</html>
+
+
+
+
+
+
+
+

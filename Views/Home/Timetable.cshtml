@@ -1,0 +1,216 @@
+﻿@model List<Lesson>
+@{
+    Layout = null;
+}
+@{
+    string[,] time = new string[8, 2] { { "09:00" , "10:20" }, { "10:30", "11:50" }, { "12:10", "13:30" }, { "13:40", "15:00" }, { "15:10", "16:30" },
+{"16:40" , "18:00" }, {"18:10" , "19:30" }, {"19:40" , "21:00" } };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Timetable</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/sunny/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+</head>
+<body>
+    <script type="text/javascript">
+        $(function () {
+            $('#datep').datepicker();
+        });
+    </script>
+    <style>
+        table {
+            border: 1px solid white;
+            padding: 10px;
+        }
+
+        body {
+            padding: 10px;
+            background-color: #f0f9ff;
+            min-width: 1000px;
+        }
+
+        td {
+            font-size: 10px;
+            border: 1px solid white;
+            padding: 10px;
+            transition: .2s;
+        }
+        td:hover .edit{
+            display:inline-block;
+        }
+        td:hover{
+            background-color: lightblue;
+            transition: .2s;
+        }
+
+        th {
+            font-size: 12px;
+            background-color: #57b9ff;
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .th {
+            font-size: 12px;
+            background-color: #8aceff;
+            border: 1px solid white;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .discipline {
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .header {
+            text-align: center;
+            margin: 30px;
+        }
+
+        input {
+            width: 200px;
+            text-align: left;
+        }
+
+        .control-panel {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .form {
+            width: 200px;
+            display: inline-block;
+        }
+        .lesson {
+            display: inline-block;
+            width: 80%;
+            vertical-align: top;
+        }
+        .edit {
+            display: inline-block;
+            text-align: right;
+            width: 15%;
+            vertical-align: top;
+            display: none;
+        }
+        i {
+            font-size: 15px;
+            vertical-align: top;
+            margin-top: 3px;
+        }
+        .fa-edit{
+            margin-right: -3px;
+        }
+        th i{
+            font-size: 30px;
+        }
+    </style>
+
+    <div class="header">
+        <h2>Расписание учебных занятий</h2>
+    </div>
+
+    <div class="control-panel">
+        <div class="form">
+            <form asp-action="Timetable" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Email" name="email">
+                </div>
+            </form>
+        </div>
+        <div class="form">
+            <form asp-action="Timetable" method="post">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Date" name="date">
+                </div>
+            </form>
+        </div>
+        <div style="display:inline-block;">
+            <a asp-action="ListLessons" class="btn btn-light">List</a>
+        </div>
+
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <a asp-action="PreviousWeek"><i class="fas fa-chevron-left"> </i> </a>
+                    <a asp-action="NextWeek"><i class="fas fa-chevron-right"> </i> </a>
+                </th>
+                @{ 
+                    string date = (string)ViewData["date"];
+                }
+                <th scope="col">Понедельник<br />@date</th>
+                <th scope="col">Вторник<br />@DateTime.Parse(date).AddDays(1).ToString("d")</th>
+                <th scope="col">Среда<br />@DateTime.Parse(date).AddDays(2).ToString("d")</th>
+                <th scope="col">Четверг<br />@DateTime.Parse(date).AddDays(3).ToString("d")</th>
+                <th scope="col">Пятница<br />@DateTime.Parse(date).AddDays(4).ToString("d")</th>
+                <th scope="col">Суббота<br />@DateTime.Parse(date).AddDays(5).ToString("d")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (var i = 0; i < 8; i++)
+            {
+                <tr>
+                    <th scope="row" width="8%" class="th">@time[i, 0]-@time[i, 1]</th>
+                    @for (var j = 1; j <= 6; j++)
+                    {
+                        bool kek = true;
+                    <td width="15.333%" >
+                        @foreach (Lesson item in Model)
+                        {
+                            int dayWeek = (int)DateTime.Parse(item.Date).DayOfWeek;
+                            if (dayWeek == j && item.BeginLesson == time[i, 0] && DateTime.Parse(item.Date) >= DateTime.Parse(date) && DateTime.Parse(item.Date) <= DateTime.Parse(date).AddDays(5) &&
+                                ((string)ViewData["email"] == item.Email || item.Email == null))
+                            {
+                                kek = false;
+                                <div class="lesson">
+                                    <div class="discipline">@item.Name</div> @item.Auditorium <br /> @item.Type <br />
+                                    @item.Building <br /> @item.Lecturer <br />
+                                </div>
+                                <div class="edit">
+                                    <a href="/home/Create?date=@date&numLesson=@(i+1)&dayOfWeek=@j&email=@ViewData["email"]">
+                                        <i class="fas fa-plus"></i>
+                                    </a><br />
+                                    <a href="/home/Update?name=@item.Name&date=@item.Date&beginLesson=@item.BeginLesson&status=@item.Status&email=@ViewData["email"]&num=@(i+1)&id=@item.Id">
+                                        <i class="fas fa-edit"></i><br />
+                                    </a>
+                                    <a href="/home/Delete?name=@item.Name&date=@item.Date&email=@ViewData["email"]&time=@item.BeginLesson&status=@item.Status&id=@item.Id">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            }
+                        }
+                        @if (kek)
+                        {
+                            <div class="lesson">
+                            </div>
+                            <div class="edit">
+                                <a href="/home/Create?date=@date&numLesson=@(i+1)&dayOfWeek=@j&email=@ViewData["email"]"><i class="fas fa-plus"></i></a>
+                            </div>
+                        }
+                    </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>
+
+
+
+
+
+
+
